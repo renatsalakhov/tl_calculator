@@ -68,9 +68,9 @@
 </template>
 
 <script>
-import Header from '@/components/Header.vue'
-import Loader from '@/components/Loader.vue'
-import Search from '@/components/Search.vue'
+const Header = () => import('@/components/Header.vue')
+const Loader = () => import('@/components/Loader.vue')
+const Search = () => import('@/components/Search.vue')
 
 import { GoogleSpreadsheet } from 'google-spreadsheet'
 
