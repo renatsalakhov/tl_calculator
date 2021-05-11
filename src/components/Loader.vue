@@ -5,14 +5,16 @@
         src="/img/logo.png"
         class="loader__logo")
       p(class="loader__status")
-        | {{status}}
+        | {{status || 'Загрузка'}}...
 </template>
 
 <script>
 export default {
   name: 'Loader',
-  props: {
-    status: String,
+  computed: {
+    status() {
+      return this.$store.state.loader.status
+    }
   }
 }
 </script>
@@ -27,7 +29,7 @@ export default {
   right: 0;
   left: 0;
   background-color: $bg01;
-  z-index: 10;
+  z-index: 50;
 }
 
 .loader-enter-active,
