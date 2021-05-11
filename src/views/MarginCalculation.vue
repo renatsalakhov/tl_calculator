@@ -71,11 +71,11 @@ export default {
   data: () => ({
     form: {
       customer: {
-        rate: 26000,
+        rate: '',
         type: 'cash',
       },
       carrier: {
-        rate: 20000,
+        rate: '',
         type: 'cash',
       },
     },

@@ -30,7 +30,10 @@ export default {
     list: Array,
     placeholder: String,
     selectItem: Function,
-    exeption: String,
+    exeption: {
+      type: String,
+      default: '',
+    },
   },
   data: () => ({
     input: '',

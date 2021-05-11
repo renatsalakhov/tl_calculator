@@ -16,8 +16,7 @@
                 class="form__search"
                 :list="cities"
                 :placeholder="'Из города'"
-                :selectItem="(item) => form.from = item"
-                :exeption="form.to")
+                :selectItem="(item) => form.from = item")
             div(class="form__item")
               label(
                 class="form__label"
@@ -28,8 +27,7 @@
                 class="form__search"
                 :list="cities"
                 :placeholder="'В город'"
-                :selectItem="(item) => form.to = item"
-                :exeption="form.from")
+                :selectItem="(item) => form.to = item")
           div(class="form__block")
             p(class="form__label")
               | Вид автотранспорта
@@ -45,7 +43,7 @@
           div(class="form__block")
             button(
               class="form__button"
-              :class="{form__button_passive: !form.from || !form.to || !form.type || isCalculating}"
+              :class="{form__button_passive: !form.from || !form.to || !form.type || form.from === form.to || isCalculating}"
               @click="getInfo()")
               | {{isCalculating ? 'Идет рассчет...' : 'Рассчитать'}}
       div(
@@ -187,7 +185,7 @@ export default {
       this.$store.commit('hideLoader')
     },
     async getInfo() {
-      if (!this.form.from || !this.form.to || !this.form.type) {
+      if (!this.form.from || !this.form.to || !this.form.type || this.form.from === this.form.to) {
         this.result = {}
         return
       }
