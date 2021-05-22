@@ -19,7 +19,10 @@ export default {
     isLoader() {
       return this.$store.state.loader.isVisible
     }
-  }
+  },
+  mounted() {
+    this.$store.dispatch('loadTable')
+  },
 }
 </script>
 
@@ -87,6 +90,10 @@ html {
   color: $text1;
 }
 
+.title_center {
+  text-align: center;
+}
+
 .section {
 
   .title + & {
@@ -98,6 +105,16 @@ html {
   }
 }
 
+.section__title {
+  font-size: 1.8rem;
+  font-weight: 500;
+  color: $text2;
+}
+
+.section__title_center {
+  text-align: center;
+}
+
 .form__label {
   font-size: 1.5rem;
   font-weight: 500;
@@ -106,6 +123,29 @@ html {
   span {
     color: $text2;
   }
+}
+
+
+
+.form__button {
+  display: block;
+  margin: 0 auto;
+  height: 5rem;
+  min-width: 30rem;
+  font-size: 1.6rem;
+  font-weight: 500;
+  color: $text1;
+  background-color: $accent;
+  @include hover;
+
+  @media screen and (max-width: $sm-max) {
+    width: 100%;
+  }
+}
+
+.form__button_passive {
+  color: $text2;
+  background-color: $bg3;
 }
 
 .radio {
@@ -154,6 +194,38 @@ html {
       background-color: $accent;
       border-radius: 50%;
     }
+  }
+}
+
+.table {
+  margin: 2rem auto 0;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-gap: 1rem;
+  align-items: end;
+  font-size: 1.6rem;
+
+  @media screen and (min-width: $md-min) {
+    width: 40rem;
+  }
+}
+
+.table__title {
+  color: $text3;
+
+  &:after {
+    content: ':';
+  }
+}
+
+.table__value {
+  color: $text2;
+  font-weight: 500;
+  text-align: right;
+
+  span + span:before {
+    content: ',';
+    margin-right: 0.6rem;
   }
 }
 

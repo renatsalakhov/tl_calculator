@@ -8,6 +8,7 @@ import store from './store'
 import { library } from '@fortawesome/fontawesome-svg-core'
 
 import {
+  faArrowRight,
   faBars,
   faSearch,
   faTimes,
@@ -18,6 +19,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 Vue.component('fa-icon', FontAwesomeIcon)
 
 library.add(
+  faArrowRight,
   faBars,
   faSearch,
   faTimes,

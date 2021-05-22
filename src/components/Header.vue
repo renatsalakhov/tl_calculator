@@ -12,12 +12,17 @@
         to="/"
         class="menu__link"
         :class="{menu__link_active: $route.path == '/'}")
-        | Калькулятор грузоперевозки
+        | Грузоперевозки
       router-link(
         to="/margin"
         class="menu__link"
         :class="{menu__link_active: $route.path === '/margin'}")
-        | Калькулятор маржи
+        | Чистая маржа
+      router-link(
+        to="/customer"
+        class="menu__link"
+        :class="{menu__link_active: $route.path === '/customer'}")
+        | Ставка клиенту
     button(
       class="menu__button"
       @click="isMenu = !isMenu")

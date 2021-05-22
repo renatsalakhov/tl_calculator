@@ -14,6 +14,15 @@ const routes = [
     name: 'MarginCalculation',
     component: () => import('@/views/MarginCalculation.vue'),
   },
+  {
+    path: '/customer',
+    name: 'CustomerCalculation',
+    component: () => import('@/views/CustomerCalculation.vue'),
+  },
+  {
+    path: '*',
+    redirect: '/',
+  },
 ]
 
 const router = new VueRouter({

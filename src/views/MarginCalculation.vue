@@ -2,7 +2,7 @@
   div(class="page")
     div(class="container")
       h1(class="title")
-        | Рассчет чистой маржи
+        | Расчет чистой маржи
       div(class="section")
         div(class="form")
           div(class="form__block")
@@ -66,8 +66,6 @@
 <script>
 export default {
   name: 'MarginCalculation',
-  components: {
-  },
   data: () => ({
     form: {
       customer: {
@@ -136,9 +134,6 @@ export default {
 
       return customer * (100 - this.customerPercent) / 100 - carrier * (100 + this.carrierPercent) / 100
     }
-  },
-  mounted() {
-    this.$store.commit('hideLoader')
   },
 }
 </script>
