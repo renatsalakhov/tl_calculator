@@ -22,7 +22,12 @@
         to="/customer"
         class="menu__link"
         :class="{menu__link_active: $route.path === '/customer'}")
-        | Ставка клиенту
+        | Ставка заказчику
+      router-link(
+        to="/insurance"
+        class="menu__link"
+        :class="{menu__link_active: $route.path === '/insurance'}")
+        | Страховка
     button(
       class="menu__button"
       @click="isMenu = !isMenu")
@@ -100,7 +105,7 @@ export default {
   
   @media screen and (min-width: $md-min) {
     text-align: right;
-    padding-right: 4rem;
+    padding-right: 2rem;
   }
 }
 
@@ -127,7 +132,7 @@ export default {
   @media screen and (min-width: $md-min) {
 
     &:not(:last-child) {
-      margin-right: 4rem;
+      margin-right: 2rem;
     }
 
     &_active {
@@ -135,12 +140,19 @@ export default {
       &:after {
         content: '';
         position: absolute;
-        bottom: 0.4rem;
+        bottom: 0.6rem;
         left: 0;
         height: 1px;
         width: 100%;
         background-color: $accent;
       }
+    }
+  }
+  
+  @media screen and (min-width: $lg-min) {
+
+    &:not(:last-child) {
+      margin-right: 3rem;
     }
   }
 }

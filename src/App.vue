@@ -115,6 +115,20 @@ html {
   text-align: center;
 }
 
+.section__desc {
+  margin-top: 4rem;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 40rem;
+  font-size: 1.4rem;
+  text-align: center;
+  color: $text2;
+
+  p + p {
+    margin-top: 1rem;
+  }
+}
+
 .form__label {
   font-size: 1.5rem;
   font-weight: 500;

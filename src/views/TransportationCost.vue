@@ -32,14 +32,24 @@
             p(class="form__label")
               | Вид автотранспорта
             div(class="form__types")
-              div(
-                v-for="type in types"
-                class="radio"
-                :class="{radio_checked: form.type === type.key}"
-                @click="() => form.type = type.key")
-                span(class="radio__box")
-                span(class="radio__text")
-                  | {{type.text}}
+              div
+                div(
+                  v-for="type in types[0]"
+                  class="radio"
+                  :class="{radio_checked: form.type === type.key}"
+                  @click="() => form.type = type.key")
+                  span(class="radio__box")
+                  span(class="radio__text")
+                    | {{type.text}} ({{type.desc}})
+              div
+                div(
+                  v-for="type in types[1]"
+                  class="radio"
+                  :class="{radio_checked: form.type === type.key}"
+                  @click="() => form.type = type.key")
+                  span(class="radio__box")
+                  span(class="radio__text")
+                    | {{type.text}} ({{type.desc}})
           div(class="form__block")
             button(
               class="form__button"
@@ -73,7 +83,6 @@
 const Search = () => import('@/components/Search.vue')
 
 export default {
-  name: 'TransportationCost',
   components: {
     Search
   },
@@ -107,7 +116,7 @@ export default {
       return [
         {
           title: 'Вид автотранспорта',
-          value: this.types.filter(t => t.key === this.result.type)[0].text
+          value: this.types.flat().filter(t => t.key === this.result.type)[0].text
         },
         {
           title: `Ставка за км`,
@@ -193,18 +202,9 @@ export default {
   margin-top: 1rem;
   display: grid;
   grid-column-gap: 2rem;
-  grid-row-gap: 1rem;
 
   @media screen and (min-width: $sm-min) {
     grid-template-columns: repeat(2, 1fr);
-  }
-
-  @media screen and (min-width: $md-min) {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  @media screen and (min-width: $lg-min) {
-    grid-template-columns: repeat(4, 1fr);
   }
 }
 

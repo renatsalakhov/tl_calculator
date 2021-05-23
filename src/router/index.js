@@ -6,18 +6,19 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    name: 'TransportationCost',
     component: () => import('@/views/TransportationCost.vue'),
   },
   {
     path: '/margin',
-    name: 'MarginCalculation',
     component: () => import('@/views/MarginCalculation.vue'),
   },
   {
     path: '/customer',
-    name: 'CustomerCalculation',
     component: () => import('@/views/CustomerCalculation.vue'),
+  },
+  {
+    path: '/insurance',
+    component: () => import('@/views/InsuranceCalculation.vue'),
   },
   {
     path: '*',

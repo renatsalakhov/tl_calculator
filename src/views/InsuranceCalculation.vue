@@ -2,30 +2,20 @@
   div(class="page")
     div(class="container")
       h1(class="title title_center")
-        | Расчет ставки заказчику
+        | Расчет страховки
       div(class="section section_center")
         div(class="form")
           div(class="form__block")
             div(class="form__item")
               input(
                 class="form__input form__input_number"
-                placeholder="Введите ставку перевозчика"
+                placeholder="Введите стоимость груза"
                 type="number"
-                v-model="form.input"
+                v-model="input"
                 @keyup.enter="getResult()")
-            div(class="form__item")
-              div(class="form__types")
-                div(
-                  v-for="type in types"
-                  class="radio"
-                  :class="{radio_checked: form.type === type.key}"
-                  @click="() => form.type = type.key")
-                  span(class="radio__box")
-                  span(class="radio__text")
-                    | {{type.text}}
               button(
                 class="form__button"
-                :class="{form__button_passive: !form.input || !form.type}"
+                :class="{form__button_passive: !input}"
                 @click="getResult()")
                 | Рассчитать
       div(
@@ -39,53 +29,32 @@
               | {{row.title}}
             div(class="table__value")
               | {{row.value}}
+        div(class="section__desc")
+          p * Страховка для грузов, стоимостью более 1 млн рублей
+          p ** Стоимость страховки суммируется со стоимостью перевозки и сообщается клиенту в виде общей стоимости
 </template>
 
 <script>
 export default {
   data: () => ({
-    form: {
-      input: '',
-      type: '',
-    },
-    types: [
-      {
-        key: 'matching',
-        text: 'Формы оплаты заказчика и перевозчика совпадают',
-      },
-      {
-        key: 'vat',
-        text: 'Заказчик с НДС, перевозчик без НДС',
-      },
-    ],
+    input: '',
     results: [],
   }),
   methods: {
     getResult() {
-      if (!this.form.input || !this.form.type) {
+      if (!this.input) {
         this.results = []
         return
       }
 
-      const result = this.$store.getters.getMarginByCarrier(this.form.input)
-      const vat = this.form.type === 'vat' ? 0.2 : 0
-
       this.results = [
         {
-          title: 'Ставка перевозчика',
-          value: `${result.carrier} руб.`
+          title: 'Себестоимость',
+          value: `${(this.input * 0.0008).toFixed(2)} руб.`
         },
         {
-          title: 'Ставка заказчику',
-          value: `${result.customer + result.carrier * vat} руб.`
-        },
-        {
-          title: `Маржа${vat ? ' (с учетом НДС 20%)': ''}`,
-          value: `${result.value + result.carrier * vat} руб.`
-        },
-        {
-          title: `Процент маржи${vat ? ' (с учетом НДС 20%)': ''}`,
-          value: `${result.percent + vat * 100}%`
+          title: 'Страховка с маржой',
+          value: `${(this.input * 0.0015).toFixed(2)} руб.`
         },
       ]
     }
@@ -101,14 +70,6 @@ export default {
   margin-right: auto;
   max-width: 40rem;
 }
-
-.form__item {
-
-  & + & {
-    margin-top: 2rem;
-  }
-}
-
 
 .form__input {
   padding: 0 2rem;
@@ -132,6 +93,7 @@ export default {
     -webkit-appearance: none;
   }
 }
+
 
 .form__button {
   margin-top: 2rem;

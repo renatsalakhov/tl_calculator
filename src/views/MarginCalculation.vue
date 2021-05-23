@@ -65,7 +65,6 @@
 
 <script>
 export default {
-  name: 'MarginCalculation',
   data: () => ({
     form: {
       customer: {
