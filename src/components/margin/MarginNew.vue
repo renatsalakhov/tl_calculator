@@ -23,6 +23,24 @@
               span(class="radio__box")
               span(class="radio__text")
                 | {{type.text}}
+          template(v-if="form.customer.type === 'no vat' && form.carrier.type === 'cash'")
+            p(class="form__label")
+              | Куда оплачивает заказчик?
+            div(class="form__types form__types_list")
+              div(
+                class="radio"
+                :class="{radio_checked: form.customer.isPayToIE}"
+                @click="() => form.customer.isPayToIE = true")
+                span(class="radio__box")
+                span(class="radio__text")
+                  | ИП
+              div(
+                class="radio"
+                :class="{radio_checked: !form.customer.isPayToIE}"
+                @click="() => form.customer.isPayToIE = false")
+                span(class="radio__box")
+                span(class="radio__text")
+                  | ООО
       div(class="form__block")
         div(class="form__item")
           label(
@@ -45,24 +63,6 @@
               span(class="radio__box")
               span(class="radio__text")
                 | {{type.text}}
-          template(v-if="form.customer.type === 'no vat' && form.carrier.type === 'cash'")
-            p(class="form__label")
-              | Форма занятости перевозчика
-            div(class="form__types form__types_list")
-              div(
-                class="radio"
-                :class="{radio_checked: form.carrier.isIE}"
-                @click="() => form.carrier.isIE = true")
-                span(class="radio__box")
-                span(class="radio__text")
-                  | ИП
-              div(
-                class="radio"
-                :class="{radio_checked: !form.carrier.isIE}"
-                @click="() => form.carrier.isIE = false")
-                span(class="radio__box")
-                span(class="radio__text")
-                  | Другое
     div(class="result")
       | Чистая маржа: 
       span
@@ -77,11 +77,11 @@ export default {
       customer: {
         rate: '',
         type: 'cash',
+        isPayToIE: true,
       },
       carrier: {
         rate: '',
         type: 'cash',
-        isIE: true,
       },
     },
     types: [
@@ -129,7 +129,7 @@ export default {
       }
 
       if (customer.type === 'no vat' && carrier.type === 'cash') {
-        return customer.rate * 0.9 - carrier.rate * (carrier.isIE ? 1.015 : 1.13)
+        return customer.rate * 0.9 - carrier.rate * (customer.isPayToIE ? 1.015 : 1.13)
       }
 
       if (customer.type === 'cash' && carrier.type === 'vat') {
@@ -224,8 +224,10 @@ export default {
 .form__types_list {
   justify-content: start;
 
-  .radio + .radio {
-    margin-left: 4rem;
+  @media screen and (min-width: $sm-min) {
+    .radio + .radio {
+      margin-left: 4rem;
+    }
   }
 }
 
