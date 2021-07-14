@@ -153,10 +153,6 @@ export default {
 <style lang="scss" scoped>
 @import '@/assets/scss/vars.scss';
 
-.section {
-  margin-top: 3rem;
-}
-
 .form {
   display: grid;
 
