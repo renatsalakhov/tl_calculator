@@ -3,6 +3,8 @@
     div(class="container")
       h1(class="title title_center")
         | Расчет ставки заказчику
+        br
+        | при известной ставке перевозчика
       div(class="section section_center")
         div(class="form")
           div(class="form__block")
@@ -55,7 +57,7 @@ export default {
       },
       {
         key: 'vat',
-        text: 'Заказчик с НДС, перевозчик без НДС',
+        text: 'Заказчик с НДС, перевозчик без НДС/наличка',
       },
     ],
     results: [],

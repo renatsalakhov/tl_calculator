@@ -50,7 +50,7 @@ export default {
       this.results = [
         {
           title: 'Себестоимость',
-          value: `${(this.input * 0.0008).toFixed(2)} руб.`
+          value: `${(this.input * 0.00067).toFixed(2)} руб.`
         },
         {
           title: 'Страховка с маржой',

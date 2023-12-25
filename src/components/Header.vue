@@ -2,9 +2,9 @@
   div(class="header")
     div(class="header__logo")
       img(
-        src="/img/logo.png" alt="")
+        src="/img/truck.png" alt="")
     p(class="header__title")
-      | Tiger Logistic
+      | Логистический калькулятор
     div(
       class="menu"
       :class="{menu_visible: isMenu}")
@@ -72,16 +72,18 @@ export default {
 }
 
 .header__logo {
+  padding: 1rem;
   height: 6rem;
 
   img {
-    height: 6rem;
+    height: 4rem;
   }
 }
 
 .header__title {
   font-size: 1.8rem;
   font-weight: 500;
+  line-height: 20px;
   color: $text01;
 }
 

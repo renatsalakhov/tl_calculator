@@ -1,9 +1,11 @@
 <template lang="pug">
   div(class="loader")
     div(class="loader__body")
-      img(
-        src="/img/logo.png"
-        class="loader__logo")
+      //- img(
+      //-   src="/img/logo.png"
+      //-   class="loader__logo")
+      p(class="loader__title")
+        | Логистический калькулятор
       p(class="loader__status")
         | {{status || 'Загрузка'}}...
 </template>
@@ -65,6 +67,14 @@ export default {
   to {
     transform: rotateY(-360deg);
   } 
+}
+
+.loader__title {
+  margin-bottom: 1rem;
+  font-size: 1.8rem;
+  font-weight: 500;
+  line-height: 20px;
+  color: $text01;
 }
 
 .loader__status {

@@ -102,7 +102,9 @@ export default {
       }
 
       if (customer.type === 'no vat' && carrier.type === 'vat') {
-        return customer.rate * 0.9 - carrier.rate / 1.2
+        // return customer.rate * 0.9 - carrier.rate / 1.2
+        return (customer.rate - carrier.rate) * 0.9
+
       }
 
       if (customer.type === 'no vat' && carrier.type === 'no vat') {
