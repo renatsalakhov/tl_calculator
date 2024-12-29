@@ -16,13 +16,14 @@
             | Форма оплаты заказчика
           div(class="form__types")
             div(
-              v-for="type in types"
+              v-for="type in form.customer.types"
+              :key="type"
               class="radio"
-              :class="{radio_checked: form.customer.type === type.key}"
-              @click="() => form.customer.type = type.key")
+              :class="{radio_checked: form.customer.type === type}"
+              @click="() => form.customer.type = type")
               span(class="radio__box")
               span(class="radio__text")
-                | {{type.text}}
+                | {{types[type]}}
       div(class="form__block")
         div(class="form__item")
           label(
@@ -38,14 +39,14 @@
             | Форма оплаты перевозчику
           div(class="form__types")
             div(
-              v-for="type in types"
+              v-for="type in form.carrier.types"
+              :key="type"
               class="radio"
-              :class="{radio_checked: form.carrier.type === type.key}"
-              @click="() => form.carrier.type = type.key")
+              :class="{radio_checked: form.carrier.type === type}"
+              @click="() => form.carrier.type = type")
               span(class="radio__box")
               span(class="radio__text")
-                | {{type.text}}
-
+                | {{types[type]}}
                 
     div(v-if="result.error" class="result")
       p(class="result__text result__text_error")
@@ -56,7 +57,7 @@
         span
           | {{margin}} руб.
       p(class="result__text result__text_small")
-        | Рекомендации по оформлению: 
+        | Оформлять на компанию: 
         span
           | {{result.paperwork}}
 </template>
@@ -69,30 +70,20 @@ export default {
       customer: {
         rate: "",
         type: "cash",
+        types: ["cash", "vat", "vat 5"],
       },
       carrier: {
         rate: "",
         type: "cash",
+        types: ["cash", "vat", "vat 5", "no vat"],
       },
     },
-    types: [
-      {
-        key: "cash",
-        text: "Наличные",
-      },
-      {
-        key: "vat",
-        text: "НДС 20%",
-      },
-      {
-        key: "vat 5",
-        text: "НДС 5%",
-      },
-      {
-        key: "no vat",
-        text: "Без НДС",
-      },
-    ],
+    types: {
+      cash: "Наличные",
+      vat: "НДС 20%",
+      "vat 5": "НДС 5%",
+      "no vat": "Без НДС",
+    },
   }),
   computed: {
     result() {
@@ -146,7 +137,7 @@ export default {
         }
 
         if (carrier.type === "no vat") {
-          return this.getResult(customer.rate - carrier.rate * 0.9);
+          return this.getResult(customer.rate - carrier.rate * 0.9, "ИП");
         }
 
         if (carrier.type === "vat 5") {
@@ -154,12 +145,6 @@ export default {
         }
 
         if (carrier.type === "cash") {
-          return this.getResult(customer.rate - carrier.rate);
-        }
-      }
-
-      if (customer.type === "no vat") {
-        if (carrier.type === "no vat") {
           return this.getResult(customer.rate - carrier.rate);
         }
       }
