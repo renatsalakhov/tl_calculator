@@ -45,96 +45,145 @@
               span(class="radio__box")
               span(class="radio__text")
                 | {{type.text}}
-    div(class="result")
-      | Чистая маржа: 
-      span
-        | {{margin.toFixed(2)}} руб.
+
+                
+    div(v-if="result.error" class="result")
+      p(class="result__text result__text_error")
+        | Выбранная форма оплаты недоступна
+    div(v-else class="result")
+      p(class="result__text")
+        | Чистая маржа: 
+        span
+          | {{margin}} руб.
+      p(class="result__text result__text_small")
+        | Рекомендации по оформлению: 
+        span
+          | {{result.paperwork}}
 </template>
 
 <script>
 export default {
-  name: 'MarginNew',
+  name: "MarginNew",
   data: () => ({
     form: {
       customer: {
-        rate: '',
-        type: 'cash',
+        rate: "",
+        type: "cash",
       },
       carrier: {
-        rate: '',
-        type: 'cash',
+        rate: "",
+        type: "cash",
       },
     },
     types: [
       {
-        key: 'cash',
-        text: 'Наличные',
+        key: "cash",
+        text: "Наличные",
       },
       {
-        key: 'vat',
-        text: 'С НДС',
+        key: "vat",
+        text: "НДС 20%",
       },
       {
-        key: 'no vat',
-        text: 'Без НДС',
+        key: "vat 5",
+        text: "НДС 5%",
       },
-    ]
+      {
+        key: "no vat",
+        text: "Без НДС",
+      },
+    ],
   }),
   computed: {
+    result() {
+      const customer = this.form.customer;
+      const carrier = this.form.carrier;
+
+      if (customer.type === "vat") {
+        if (carrier.type === "vat") {
+          return this.getResult(customer.rate / 1.2 - carrier.rate / 1.2);
+        }
+
+        if (carrier.type === "no vat") {
+          return this.getResult(customer.rate / 1.2 - carrier.rate);
+        }
+
+        if (carrier.type === "vat 5") {
+          return this.getResult(customer.rate / 1.2 - carrier.rate / 1.05);
+        }
+
+        if (carrier.type === "cash") {
+          return this.getResult(customer.rate / 1.2 - carrier.rate * 1.13);
+        }
+      }
+
+      if (customer.type === "vat 5") {
+        if (carrier.type === "vat") {
+          return this.getResult(
+            (customer.rate / 1.05 - carrier.rate) * 0.9,
+            "ИП"
+          );
+        }
+
+        if (carrier.type === "no vat") {
+          return this.getResult(
+            (customer.rate / 1.05 - carrier.rate) * 0.9,
+            "ИП"
+          );
+        }
+
+        if (carrier.type === "cash") {
+          return this.getResult(
+            (customer.rate / 1.05) * 0.9 - carrier.rate * 1.13,
+            "ИП"
+          );
+        }
+      }
+
+      if (customer.type === "cash") {
+        if (carrier.type === "vat") {
+          return this.getResult(customer.rate - carrier.rate / 1.2);
+        }
+
+        if (carrier.type === "no vat") {
+          return this.getResult(customer.rate - carrier.rate * 0.9);
+        }
+
+        if (carrier.type === "vat 5") {
+          return this.getResult(customer.rate - carrier.rate / 1.05);
+        }
+
+        if (carrier.type === "cash") {
+          return this.getResult(customer.rate - carrier.rate);
+        }
+      }
+
+      if (customer.type === "no vat") {
+        if (carrier.type === "no vat") {
+          return this.getResult(customer.rate - carrier.rate);
+        }
+      }
+
+      return this.getResult();
+    },
     margin() {
-      const customer = this.form.customer
-      const carrier = this.form.carrier
-
-      if (!customer.rate || !carrier.rate) {
-        return 0
-      }
-
-      if (customer.type === 'vat' && carrier.type === 'vat') {
-        return (customer.rate - carrier.rate) / 1.2
-      }
-
-      if (customer.type === 'vat' && carrier.type === 'no vat') {
-        return customer.rate / 1.2 - carrier.rate
-      }
-
-      if (customer.type === 'vat' && carrier.type === 'cash') {
-        return customer.rate / 1.2 - carrier.rate * 1.13
-      }
-
-      if (customer.type === 'no vat' && carrier.type === 'vat') {
-        // return customer.rate * 0.9 - carrier.rate / 1.2
-        return (customer.rate - carrier.rate) * 0.9
-
-      }
-
-      if (customer.type === 'no vat' && carrier.type === 'no vat') {
-        return (customer.rate - carrier.rate) * 0.9
-      }
-
-      if (customer.type === 'no vat' && carrier.type === 'cash') {
-        return customer.rate * 0.9 - carrier.rate * 1.015
-      }
-
-      if (customer.type === 'cash' && carrier.type === 'vat') {
-        return customer.rate - carrier.rate * 5 / 6
-      }
-
-      if (customer.type === 'cash' && carrier.type === 'no vat') {
-        return customer.rate - carrier.rate * 0.9
-      }
-
-      if (customer.type === 'cash' && carrier.type === 'cash') {
-        return customer.rate - carrier.rate
-      }
-
-      return 0
-    }
+      return this.result.margin.toFixed(2);
+    },
   },
-}
+  methods: {
+    getResult(margin, paperwork) {
+      return {
+        margin: margin ?? 0,
+        paperwork: paperwork ?? "Тайгер",
+        error: typeof margin === "undefined",
+      };
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/scss/vars.scss';
+@import "@/assets/scss/vars.scss";
 
 .form {
   display: grid;
@@ -146,7 +195,6 @@ export default {
 }
 
 .form__block {
-  
   @media screen and (max-width: $sm-max) {
     & + & {
       margin-top: 4rem;
@@ -155,7 +203,6 @@ export default {
 }
 
 .form__item {
-
   & + & {
     margin-top: 3rem;
   }
@@ -185,7 +232,6 @@ export default {
 }
 
 .form__label {
-
   .form__types + & {
     margin-top: 2rem;
   }
@@ -196,6 +242,7 @@ export default {
 
   @media screen and (min-width: $sm-min) {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
   }
 }
@@ -217,7 +264,7 @@ export default {
 
   span {
     font-weight: 600;
-    color: $text2;    
+    color: $text2;
   }
 
   @media screen and (min-width: $sm-min) {
@@ -226,4 +273,18 @@ export default {
   }
 }
 
+.result__text {
+  & + & {
+    margin-top: 16px;
+  }
+}
+
+.result__text_small {
+  font-size: 1.4rem;
+}
+
+.result__text_error {
+  font-size: 1.4rem;
+  color: red;
+}
 </style>
